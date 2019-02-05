@@ -4,6 +4,8 @@ from django.db import models
 class Category(models.Model): # defining the parameters of the Category class
     name = models.CharField(max_length=128, unique=True) #PK
 
+    objects = models.Manager()
+
     class Meta:
         verbose_name_plural = 'Categories'
 
@@ -18,6 +20,8 @@ class Page(models.Model): # defining the parameters of the Page class
     title = models.CharField(max_length=128)
     url = models.URLField()
     views = models.IntegerField(default=0)
+
+    objects = models.Manager()
 
     def __str__(self): # generates a string representation like toString, no need for unicode as using Python3
         return self.title
