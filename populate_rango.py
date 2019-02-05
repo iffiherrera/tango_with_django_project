@@ -34,7 +34,18 @@ def populate():
         "Other Frameworks": {"pages": other_pages}
     }
     # more categories get added in the directories above.
+    
+    def add_page(cat, title, url, views=0): # constructor
+        p = Page.objects.get_or_create(category=cat, title=title)[0]
+        p.url = url
+        p.views=views
+        p.save()
+        return p
 
+    def add_cat(name):
+        c = Category.objects.get_or_create(name=name)[0]
+        c.save()
+        return c
     # cats dictionary below
 
     for cat, cat_data in cats.items():
@@ -43,21 +54,11 @@ def populate():
             add_page(c,p["title"], p["url"])
 
 # print categories for Category and Page initially.
-        for c in Category.objects.all():
-            for p in Page.objects.filter(category=c):
-                print("- {0} - {1}".format(str(c),str(p)))
+    for c in Category.objects.all():
+        for p in Page.objects.filter(category=c):
+            print("- {0} - {1}".format(str(c),str(p)))
     
-def add_page(cat, title, url, views=0): # constructor
-    p = Page.object.get_or_create(category=cat, title=title)[0]
-    p.url = url
-    p.views=views
-    p.save()
-    return p
-
-def add_cat(name):
-    c = Category.object.get_or_create(name=name)[0]
-    c.save()
-    return c
+    
 
 # execute 
 if __name__ == '__main__':
