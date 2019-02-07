@@ -11,7 +11,10 @@ from django.http import HttpResponse
     
 def index(request): # the view created now is an index, it must be called request.
     category_list = Category.objects.order_by('-likes')[:5]
-    context_dict = {'categories': category_list}
+    pages_list = Page.objects.order_by('-views')[:5]
+    context_dict = {'categories': category_list,
+                    'pages': pages_list}
+    
     # return a rendered response to send to the client
     return render(request, 'rango/index.html',context_dict)
 
