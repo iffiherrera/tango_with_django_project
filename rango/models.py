@@ -18,7 +18,6 @@ class Category(models.Model): # defining the parameters of the Category class
     def __str__(self):
         return self.name
 
-
 # 1:M relation category to page 
 
 class Page(models.Model): # defining the parameters of the Page class
@@ -37,5 +36,3 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-
