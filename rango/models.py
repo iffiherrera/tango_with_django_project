@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
-# Create your models here.
 class Category(models.Model): # defining the parameters of the Category class
     name = models.CharField(max_length=128, unique=True) #PK
     views = models.IntegerField(default=0)
@@ -29,3 +29,13 @@ class Page(models.Model): # defining the parameters of the Page class
 
     def __str__(self): # generates a string representation like toString, no need for unicode as using Python3
         return self.title
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User) # uses the default 5 fields.
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+
