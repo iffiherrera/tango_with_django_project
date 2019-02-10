@@ -14,14 +14,14 @@
    <div>
     {% block body_block %}
         <!-- Template for body block -->
-    {% endblocks %}
+    {% endblock %}
    </div>
    <hr/> <!-- horizontal rule, divides the title block from the body block-->
    <div>
        <ul>
            <li><a href="{% url 'add_category' %}">Add New Category</a></li>
-           <li><a href="{% url 'about' %}"></a></li>
-           <li><a href="{% url 'index' %}"></a></li>
+           <li><a href="{% url 'about' %}">About</a></li>
+           <li><a href="{% url 'index' %}">Index</a></li>
        </ul>
    </div>
     
