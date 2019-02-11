@@ -2,7 +2,6 @@ from django.conf.urls import url
 from rango import views
 from django.conf import settings
 
-app_name = 'rango'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
 
