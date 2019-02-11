@@ -72,7 +72,7 @@ def add_page(request, category_name_slug):
                 page.category = category
                 page.views = 0
                 page.save()
-            return show_category(request, category_name_slug)
+                return show_category(request, category_name_slug)
         else:
             print(form.errors)
     
@@ -80,7 +80,7 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict)
 
 def register(request):
-    registered = False # boolean used to tell the template.
+    registered = False # If set to true the form is filled in.
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
@@ -98,23 +98,25 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             
-                profile.save() # user model instance saved.
+            profile.save() # user model instance saved.
 
-                registered = True 
-            else:
-                print(user_form.errors, profile_form.errors)
+            registered = True 
+        else:
+            print(user_form.errors, profile_form.errors)
 
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request, 'rango/register.html', 
-                            {'user_form': user_form,
-                            'profile_form': profile_form,
-                            'registered': registered})
+    return render(request, 
+                'rango/register.html', 
+                {'user_form': user_form,
+                'profile_form': profile_form,
+                'registered': registered})
 
 def user_login(request):
     context_dict = {}
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -129,10 +131,10 @@ def user_login(request):
                 return HttpResponse("Your Rango account is disabled.")
         
         else:
-            print("Invalid login details: {0}, {1}".format(username,password))
+            print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
     
-    return render(request, 'rango/login.html', {})
+    return render(request, 'rango/login.html', context_dict)
 
 @login_required #decorator 
 def restricted(request):
