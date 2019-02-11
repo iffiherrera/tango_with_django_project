@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rango.models import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm, UserProfileForm, UserForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse 
 from django.contrib.auth.decorators import login_required
@@ -48,12 +48,13 @@ def add_category(request):
         form = CategoryForm(request.POST)
 
         if form.is_valid():
-           category = form.save(commit=True) # save valid form and confirmation message.
+            category = form.save(commit=True) # save valid form and confirmation message.
             # return to home page.
-        return index(request)
+            return index(request)
 
-    else:
-        print(form.errors) # error message, if no form or bad form.
+        else:
+            print(form.errors) # error message, if no form or bad form.
+
     return render(request, 'rango/add_category.html', {'form': form})
 
 def add_page(request, category_name_slug):
@@ -71,11 +72,11 @@ def add_page(request, category_name_slug):
                 page.category = category
                 page.views = 0
                 page.save()
-                return show_category(request, category_name_slug)
+            return show_category(request, category_name_slug)
         else:
             print(form.errors)
     
-    context_dict = {'form':form, 'category':category}
+    context_dict = {'form':form, 'category': category}
     return render(request, 'rango/add_page.html', context_dict)
 
 def register(request):
@@ -97,11 +98,11 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             
-            profile.save() # user model instance saved.
+                profile.save() # user model instance saved.
 
-            registered = True 
-        else:
-            print(user_form.errors, profile_form.errors)
+                registered = True 
+            else:
+                print(user_form.errors, profile_form.errors)
 
     else:
         user_form = UserForm()
@@ -113,6 +114,7 @@ def register(request):
                             'registered': registered})
 
 def user_login(request):
+    context_dict = {}
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -127,12 +129,17 @@ def user_login(request):
                 return HttpResponse("Your Rango account is disabled.")
         
         else:
-            print("Invalid login details: {0}. {1}".format(username,password))
+            print("Invalid login details: {0}, {1}".format(username,password))
             return HttpResponse("Invalid login details supplied.")
     
-    else:
-        return render(request, 'rango/login.html', {})
+    return render(request, 'rango/login.html', {})
 
 @login_required #decorator 
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
+    return render(request, 'rango/restricted.html', {})
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
